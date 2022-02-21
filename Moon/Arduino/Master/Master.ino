@@ -45,15 +45,24 @@ void loop()
   String cadena = "";
   lcd.setCursor(0,0); //Columna, Linea
   lcd.print("Probando I2C");
-  Wire.requestFrom(2,3);    // Le pide 14 bytes al Esclavo 2
+  Wire.requestFrom(2,13);    // Le pide 14 bytes al Esclavo 2
 //Servo
-//  servomec.write(0);
-//  delay(2000);
+  servomec.write(0);
+  delay(2000);
 //  servomec.write(90);
 //  delay(2000);
 //  servomec.write(180);
 //  delay(2000);
-  
+  byte customChar1[] = {
+  B00000,
+  B00000,
+  B00000,
+  B00001,
+  B10010,
+  B01100,
+  B01000,
+  B00000
+};
 
 //I2C
 
@@ -64,8 +73,11 @@ void loop()
     Serial.print(c);
     cadena += c;
   }
-  lcd.setCursor(0,1);
+  lcd.createChar(0, customChar1);
+ 
+  lcd.setCursor(1,1);
   lcd.print(cadena);
+   lcd.write(byte(2));
   cadena = "";
   Serial.println(cadena);
 
