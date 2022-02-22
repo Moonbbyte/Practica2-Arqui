@@ -13,12 +13,23 @@ byte cara[] = {
   B00000,
   B00000,
   B01010,
+  B10101,
   B00000,
+  B10001,
   B01110,
-  B00100,
-  B00000,
   B00000
 };
+byte cheque[] = {
+  B00000,
+  B00000,
+  B00000,
+  B00001,
+  B10010,
+  B01100,
+  B01000,
+  B00000
+};
+
 
 
 
@@ -58,7 +69,7 @@ void loop()
   String cadena = "";
   lcd.setCursor(0,0); //Columna, Linea
   lcd.print("Probando I2C");
-  Wire.requestFrom(2,3 );    // Le pide 14 bytes al Esclavo 2
+  Wire.requestFrom(2,12 );    // Le pide 14 bytes al Esclavo 2
 //Servo
   servomec.write(0);
   //delay(100);
@@ -78,10 +89,12 @@ void loop()
     cadena += c;
   }
   lcd.setCursor(0,1);
+  lcd.write(byte(0));
+  lcd.setCursor(1,1);
   lcd.print(cadena);
   cadena = "";
   Serial.println(cadena);
-lcd.setCursor(9,1); //Columna, Linea
+lcd.setCursor(13,1); //Columna, Linea
   lcd.write(byte(0));
 
 
