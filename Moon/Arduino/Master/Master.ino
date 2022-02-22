@@ -8,23 +8,23 @@ int TRIG = 52;
 int ECO = 53;
 int DURACION;
 int DISTANCIA;
-
+byte cara[] = {
+  B00000,
+  B00000,
+  B01010,
+  B00000,
+  B01110,
+  B00100,
+  B00000,
+  B00000
+};
 
 //servo
 Servo servomec;
 //LCS
 int rs=47, rw=45, en = 43, d4=29, d5=27, d6=25, d7=23; 
 LiquidCrystal lcd(rs,en,d4,d5,d6,d7); //Rs, en ,D3,D2,D1,D0
-byte customChar[] = {
-  B00000,
-  B00000,
-  B01010,
-  B10001,
-  B01110,
-  B00000,
-  B00000,
-  B00000
-};
+
 
 
 void setup()
@@ -53,17 +53,7 @@ void loop()
 //  delay(2000);
 //  servomec.write(180);
 //  delay(2000);
-  byte customChar1[] = {
-  B00000,
-  B00000,
-  B00000,
-  B00001,
-  B10010,
-  B01100,
-  B01000,
-  B00000
-};
-
+ 
 //I2C
 
   while(Wire.available())    // slave may send less than requested
@@ -73,13 +63,14 @@ void loop()
     Serial.print(c);
     cadena += c;
   }
-  lcd.createChar(0, customChar1);
+  //lcd.createChar(0, customChar1);
  
-  lcd.setCursor(1,1);
+  lcd.setCursor(0,1);
   lcd.print(cadena);
+  lcd.setCursor(14,1);
+   lcd.write(byte(0));
    lcd.write(byte(2));
-  cadena = "";
-  Serial.println(cadena);
+  ;
 
   //Sensor
 //  digitalWrite(TRIG,HIGH);
