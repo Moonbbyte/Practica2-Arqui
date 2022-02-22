@@ -38,16 +38,7 @@ Servo servomec;
 //LCS
 int rs=47, rw=45, en = 43, d4=29, d5=27, d6=25, d7=23; 
 LiquidCrystal lcd(rs,en,d4,d5,d6,d7); //Rs, en ,D3,D2,D1,D0
-byte customChar[] = {
-  B00000,
-  B00000,
-  B01010,
-  B10001,
-  B01110,
-  B00000,
-  B00000,
-  B00000
-};
+
 
 
 void setup()
@@ -88,14 +79,17 @@ void loop()
     Serial.print(c);
     cadena += c;
   }
-  lcd.setCursor(0,1);
+  lcd.createChar(0, cara);
+  lcd.setCursor(0,1); //Columna, Linea
   lcd.write(byte(0));
   lcd.setCursor(1,1);
   lcd.print(cadena);
   cadena = "";
   Serial.println(cadena);
-lcd.setCursor(13,1); //Columna, Linea
-  lcd.write(byte(0));
+
+lcd.createChar(1, cheque);
+  lcd.setCursor(13,1); //Columna, Linea
+  lcd.write(byte(1));
 
 
   
