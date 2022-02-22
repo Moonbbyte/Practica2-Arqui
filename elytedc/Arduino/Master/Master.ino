@@ -8,16 +8,30 @@ int TRIG = 52;
 int ECO = 53;
 int DURACION;
 int DISTANCIA;
+bool valor=true;
 byte cara[] = {
   B00000,
   B00000,
   B01010,
+  B10101,
   B00000,
+  B10001,
   B01110,
-  B00100,
-  B00000,
   B00000
 };
+byte cheque[] = {
+  B00000,
+  B00000,
+  B00000,
+  B00001,
+  B10010,
+  B01100,
+  B01000,
+  B00000
+};
+
+
+
 
 //servo
 Servo servomec;
@@ -38,6 +52,7 @@ void setup()
   lcd.begin(16,2); //Columnas , Lineas
   Serial.begin(9600);  // Velocidad de conexión
   servomec.attach(32);//Pin
+  lcd.createChar(0, cara);
 }
 
 void loop()
@@ -45,15 +60,16 @@ void loop()
   String cadena = "";
   lcd.setCursor(0,0); //Columna, Linea
   lcd.print("Probando I2C");
-  Wire.requestFrom(2,13);    // Le pide 14 bytes al Esclavo 2
+  Wire.requestFrom(2,12 );    // Le pide 14 bytes al Esclavo 2
 //Servo
   servomec.write(0);
-  delay(2000);
+  //delay(100);
 //  servomec.write(90);
 //  delay(2000);
 //  servomec.write(180);
 //  delay(2000);
- 
+  
+
 //I2C
 
   while(Wire.available())    // slave may send less than requested
@@ -63,14 +79,33 @@ void loop()
     Serial.print(c);
     cadena += c;
   }
-  //lcd.createChar(0, customChar1);
- 
-  lcd.setCursor(0,1);
+  lcd.createChar(0, cara);
+  lcd.setCursor(0,1); //Columna, Linea
+  lcd.write(byte(0));
+  lcd.setCursor(1,1);
   lcd.print(cadena);
-  lcd.setCursor(14,1);
-   lcd.write(byte(0));
-   lcd.write(byte(2));
-  ;
+  cadena = "";
+  Serial.println(cadena);
+
+lcd.createChar(1, cheque);
+  lcd.setCursor(13,1); //Columna, Linea
+  lcd.write(byte(1));
+
+
+  
+  if(valor==true)
+{valor=false;
+   
+  Wire.beginTransmission(2);
+  Wire.write(4);
+  Wire.endTransmission();
+  delay(50);
+}
+  
+  delay(10);
+  Wire.beginTransmission(2);
+  Wire.write(1);
+  Wire.endTransmission();
 
   //Sensor
 //  digitalWrite(TRIG,HIGH);
@@ -101,5 +136,5 @@ void loop()
 //lcd.print(DISTANCIA);
 //lcd.print(" cm");
 
-delay(500);
+delay(100);
 }
