@@ -5,6 +5,7 @@
 int btns = A1;
 int btnd= A4;
 int btnp= A2;
+int pin=37;
 int a=0;
 bool scanea;
 bool dispara;
@@ -50,6 +51,7 @@ void setup()
 {
   pinMode(TRIG, OUTPUT);
   pinMode(ECO, INPUT);
+  pinMode(pin, INPUT);
   
   Wire.begin();        // Conexión al Bus I2C
   for (int i = 23; i < 30; i++) pinMode(i, OUTPUT);
@@ -78,46 +80,42 @@ void loop()
   lcd.write(byte(1));
   //I2C
   int cadena2;
-  delay(500);
+  delay(100);
   inicio=false;
   }
    
 while (aux){
-   if(analogRead(btns)==0){
+   if(digitalRead(pin)==0){
     //lcd.setCursor(1, 0);
     //lcd.print("prueba");
   }else{
      lcd.setCursor(1, 0);
-    lcd.print("uu");
+    lcd.print("scaneo");
     estado=true;
     aux=false;
   
   }
 
-  if(analogRead(btnp)==0){
+  //if(analogRead(btnp)==0){
     //lcd.setCursor(1, 0);
     //lcd.print("aaaaa");
-  }else{
-     lcd.setCursor(1, 0);
-    lcd.print("disparar");
-    estado1=true;
-    aux=false;
+ // }else{
+  //   lcd.setCursor(1, 0);
+  //  lcd.print("disparar");
+   // estado1=true;
+ //   aux=false;
   
-  }
+//  }
 
   }
 
 if(estado==true){
     Wire.beginTransmission(2);
-    Wire.write(0);
-    Wire.endTransmission();
-  }
-
-  if(estado1==true){
-    Wire.beginTransmission(2);
     Wire.write(1);
     Wire.endTransmission();
   }
+
+  
   
   while (false){
     Wire.requestFrom(2,1);
