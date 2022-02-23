@@ -9,6 +9,18 @@ int ECO = 53;
 int DURACION;
 int DISTANCIA;
 
+int btns = A1;
+int btnd= A4;
+int btnp= A2;
+int a=0;
+bool scanea;
+bool dispara;
+bool pausa;
+bool estado=false;
+bool estado1=false;
+bool aux=true;
+
+
 byte cara[] = {
   B00000,
   B00000,
@@ -70,9 +82,9 @@ void loop()
   lcd.createChar(1, cheque);
   lcd.setCursor(13, 1); //Columna, Linea
   lcd.write(byte(1));
-  Wire.beginTransmission(2);
-  Wire.write(1);
-  Wire.endTransmission();
+  //Wire.beginTransmission(2);
+  //Wire.write(1);
+  //Wire.endTransmission();
 
 
 
