@@ -10,7 +10,9 @@ bool scanea;
 bool dispara;
 bool pausa;
 bool estado=false;
+bool estado1=false;
 bool aux=true;
+bool inicio=true;
 
 //Sensor
 int TRIG = 52;
@@ -63,7 +65,8 @@ void setup()
 
 void loop()
 {
-  String cadena = "";lcd.setCursor(0, 1); //Columna, Linea
+  while (inicio){
+    String cadena = "";lcd.setCursor(0, 1); //Columna, Linea
   lcd.write(byte(0));
   lcd.setCursor(1, 1);
   lcd.print(cadena);
@@ -75,12 +78,14 @@ void loop()
   lcd.write(byte(1));
   //I2C
   int cadena2;
-
-  
+  delay(500);
+  inicio=false;
+  }
+   
 while (aux){
    if(analogRead(btns)==0){
-    lcd.setCursor(1, 0);
-    lcd.print("mama");
+    //lcd.setCursor(1, 0);
+    //lcd.print("prueba");
   }else{
      lcd.setCursor(1, 0);
     lcd.print("uu");
@@ -89,10 +94,28 @@ while (aux){
   
   }
 
+  if(analogRead(btnp)==0){
+    //lcd.setCursor(1, 0);
+    //lcd.print("aaaaa");
+  }else{
+     lcd.setCursor(1, 0);
+    lcd.print("disparar");
+    estado1=true;
+    aux=false;
+  
   }
+
+  }
+
 if(estado==true){
     Wire.beginTransmission(2);
     Wire.write(0);
+    Wire.endTransmission();
+  }
+
+  if(estado1==true){
+    Wire.beginTransmission(2);
+    Wire.write(1);
     Wire.endTransmission();
   }
   
@@ -106,12 +129,5 @@ if(estado==true){
     delay(1000);
   }
   
-
-//   //Columna, Linea
-//
-//  lcd.setCursor(1, 1);
-//  lcd.print(cadena);
-//  
- 
   
 }
