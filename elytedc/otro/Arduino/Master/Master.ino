@@ -6,6 +6,7 @@ int btns = A1;
 int btnd= A4;
 int btnp= A2;
 int pin=37;
+int pin1=41;
 int a=0;
 bool scanea;
 bool dispara;
@@ -96,22 +97,28 @@ while (aux){
   
   }
 
-  //if(analogRead(btnp)==0){
+  if(digitalRead(pin1)==0){
     //lcd.setCursor(1, 0);
     //lcd.print("aaaaa");
- // }else{
-  //   lcd.setCursor(1, 0);
-  //  lcd.print("disparar");
-   // estado1=true;
- //   aux=false;
+ }else{
+     lcd.setCursor(1, 0);
+    lcd.print("disparar");
+    estado1=true;
+    aux=false;
   
-//  }
+ }
 
   }
 
 if(estado==true){
     Wire.beginTransmission(2);
     Wire.write(1);
+    Wire.endTransmission();
+  }
+
+  if(estado1==true){
+    Wire.beginTransmission(2);
+    Wire.write(0);
     Wire.endTransmission();
   }
 
