@@ -4,6 +4,8 @@
 // LCD
 int rs = 47, rw = 45, en = 43, d4 = 29, d5 = 27, d6 = 25, d7 = 23;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7); //Rs, en ,D3,D2,D1,D0
+// Mensaje
+long unsigned tiempo_msj;
 
 void setup() {
   Serial.begin(9600);
@@ -22,11 +24,19 @@ void setup() {
   char c = Wire.read();
   if ((int)c == 1) {
     mostrarMensaje();
+    tiempo_msj = millis();
   }
 }
 
 void loop() {
-
+  if ((millis() - tiempo_msj) > 1000) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Esperando");
+    lcd.setCursor(0, 1);
+    lcd.print("instruccion...");
+    delay(1000);
+  }
 }
 
 void mostrarMensaje() {
@@ -53,6 +63,7 @@ void mostrarMensaje() {
   lcd.createChar(0, cara);
   lcd.setCursor(0, 0);
   lcd.write(byte(0));
+  lcd.setCursor(1, 0);
   lcd.print("GRUPO 04 ACE");
   lcd.createChar(1, cheque);
   lcd.setCursor(13, 0);
