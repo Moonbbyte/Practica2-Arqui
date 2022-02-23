@@ -82,9 +82,7 @@ void mensajeReinicioLoop() {
 }
 
 void resetearParametros() {
-  // LCD
-  lcd.clear();
-  lcd.setCursor(0, 0);
+  
 }
 
 void esperarInstrucciones() {
@@ -125,6 +123,9 @@ void esperarInstrucciones() {
       delay(1000);
     }
   }
+  // LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
 }
 
 bool estaPresionado(int idBtn) {
