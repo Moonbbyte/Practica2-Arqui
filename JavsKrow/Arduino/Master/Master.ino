@@ -72,60 +72,60 @@ void mensajeInicial() {
 }
 
 void mensajeReinicioLoop() {
-  contador_loop++;
-  lcd.setCursor(0, 0);
-  lcd.print("Entrando al Loop");
-  lcd.setCursor(0, 1);
-  lcd.print("Contador: ");
-  lcd.print(contador_loop);
-  delay(1000);
+  if ((millis() - tiempo_msj) > 10000) {
+    contador_loop++;
+    lcd.setCursor(0, 0);
+    lcd.print("Entrando al Loop");
+    lcd.setCursor(0, 1);
+    lcd.print("Contador: ");
+    lcd.print(contador_loop);
+    delay(1000);
+  }
 }
 
 void resetearParametros() {
-  
+  // LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
 }
 
 void esperarInstrucciones() {
   while (true) {
-    if ((millis() - tiempo_msj) > 10000) {
-      // Instruccion barrido
-      if (!estaPresionado(btn_barrido)) {
-        btn_barrido_pres = true;
-      }
-      if (estaPresionado(btn_barrido) && btn_barrido_pres) {
-        // Accion
-        btn_barrido_pres = false;
-      }
-      // Instruccion ataque
-      if (!estaPresionado(btn_ataque)) {
-        btn_ataque_pres = true;
-      }
-      if (estaPresionado(btn_ataque) && btn_ataque_pres) {
-        // Accion
-        btn_ataque_pres = false;
-      }
-      // Instruccion pausa
-      if (!estaPresionado(btn_pausa)) {
-        btn_pausa_pres = true;
-      }
-      if (estaPresionado(btn_pausa) && btn_pausa_pres) {
-        // Accion
-        btn_pausa_pres = false;
-      }
-      // Si no tiene instrucciones
-      if (!estaPresionado(btn_barrido) && !estaPresionado(btn_ataque) && !estaPresionado(btn_pausa)) {
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Esperando");
-        lcd.setCursor(0, 1);
-        lcd.print("instruccion...");
-      }
-      delay(1000);
+
+    // Instruccion barrido
+    if (!estaPresionado(btn_barrido)) {
+      btn_barrido_pres = true;
     }
+    if (estaPresionado(btn_barrido) && btn_barrido_pres) {
+      // Accion
+      btn_barrido_pres = false;
+    }
+    // Instruccion ataque
+    if (!estaPresionado(btn_ataque)) {
+      btn_ataque_pres = true;
+    }
+    if (estaPresionado(btn_ataque) && btn_ataque_pres) {
+      // Accion
+      btn_ataque_pres = false;
+    }
+    // Instruccion pausa
+    if (!estaPresionado(btn_pausa)) {
+      btn_pausa_pres = true;
+    }
+    if (estaPresionado(btn_pausa) && btn_pausa_pres) {
+      // Accion
+      btn_pausa_pres = false;
+    }
+    // Si no tiene instrucciones
+    if (!estaPresionado(btn_barrido) && !estaPresionado(btn_ataque) && !estaPresionado(btn_pausa)) {
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Esperando");
+      lcd.setCursor(0, 1);
+      lcd.print("instruccion...");
+    }
+    delay(1000);
   }
-  // LCD
-  lcd.clear();
-  lcd.setCursor(0, 0);
 }
 
 bool estaPresionado(int idBtn) {
