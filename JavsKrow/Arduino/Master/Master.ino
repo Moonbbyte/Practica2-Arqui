@@ -72,14 +72,17 @@ void mensajeInicial() {
 }
 
 void mensajeReinicioLoop() {
-  if ((millis() - tiempo_msj) > 10000) {
-    contador_loop++;
-    lcd.setCursor(0, 0);
-    lcd.print("Entrando al Loop");
-    lcd.setCursor(0, 1);
-    lcd.print("Contador: ");
-    lcd.print(contador_loop);
-    delay(1000);
+  while (true) {
+    if ((millis() - tiempo_msj) > 10000) {
+      contador_loop++;
+      lcd.setCursor(0, 0);
+      lcd.print("Entrando al Loop");
+      lcd.setCursor(0, 1);
+      lcd.print("Contador: ");
+      lcd.print(contador_loop);
+      delay(1000);
+      break;
+    }
   }
 }
 
@@ -91,7 +94,6 @@ void resetearParametros() {
 
 void esperarInstrucciones() {
   while (true) {
-
     // Instruccion barrido
     if (!estaPresionado(btn_barrido)) {
       btn_barrido_pres = true;
