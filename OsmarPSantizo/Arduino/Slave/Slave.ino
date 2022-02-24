@@ -8,7 +8,7 @@ int ESTADO = 0;
 int LASER = 9;
 char DISTANCIAC;
 int enemigos[] = {10,100, 20,30,90};
-int distancias[18];
+int grados[10];
 int contador = 0;
 //servo
 Servo servomec;
@@ -29,7 +29,7 @@ void setup()
 void loop()
 {
   if(ESTADO == 4){
-    Serial.println("Loop");
+    
     Disparar();
   }
   delay(500);
@@ -37,14 +37,11 @@ void loop()
 }
 
 void datos() {
-  Serial.println("datosw");
+  
   if(ESTADO == 0){
     Wire.write(1);
   }else if(ESTADO == 1){
     barrido(); 
-  }else if(ESTADO ==4){
-    Serial.println("datos");
-    Disparar();
   }
   
 }
@@ -72,25 +69,25 @@ void requestEvent()
     if (ok == 'o') { // Los arreglos son iguales
       int pos = 0;
       x = Wire.read();
-      while (x != 100) { // Mientras no se envie un 100, seguir leyendo lo que envia el maestro
-        distancias[pos] = x; // Guardando lo enviado por el maestro
+      while (x != 200) { // Mientras no se envie un 100, seguir leyendo lo que envia el maestro
+        grados[pos] = x; // Guardando lo enviado por el maestro
         pos++; // incrementando la posicion del arreglo
         x = Wire.read(); // Leyendo lo siguiente que envio el Maestro
       }
-      Serial.println("Distancias obtenidas en el Esclavo: ");
+ Serial.println("Distancias obtenidas en el Esclavo: ");
       for (int i = 0; i < 10; i++) {
-        Serial.print(distancias[i]);
+      Serial.print(grados[i]);
         //servomec.write(distancias[i]);
         delay(1000);
         Serial.print(", ");
       }
     }
     else {
-      Serial.println("Hay distancias diferentes");
+//      Serial.println("Hay distancias diferentes");
     }
   }
   else if(x == 4){
-    Serial.println("requestEvent");
+//    Serial.println("requestEvent");
     ESTADO = 4;
   }
 
@@ -159,14 +156,12 @@ void barrido() {
   
    ESTADO = 0;  
   
-  
-
 }
 
 void Disparar() {
-      Serial.println("Metodo disparar");
-      for (int i = 0; i <5 ; i++) {
-        servomec.write(enemigos[i]);
+//      Serial.println("Metodo disparar");
+      for (int i = 0; i <10 ; i++) {
+        servomec.write(grados[i]);
         delay(1000);
         digitalWrite(LASER,HIGH);
         delay(1000);
