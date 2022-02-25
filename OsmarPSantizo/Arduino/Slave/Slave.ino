@@ -161,6 +161,7 @@ void barrido() {
 void Disparar() {
 //      Serial.println("Metodo disparar");
       for (int i = 0; i <10 ; i++) {
+        
         servomec.write(grados[i]);
         delay(1000);
         digitalWrite(LASER,HIGH);

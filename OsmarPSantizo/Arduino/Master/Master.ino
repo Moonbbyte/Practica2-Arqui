@@ -118,7 +118,7 @@ void resetearParametros() {
   }
   iguales = true;
   enemigosvivos = 0;
-  enemigoseliminados=0;
+  enemigoseliminados = 0;
 }
 
 void esperarInstrucciones() {
@@ -138,17 +138,17 @@ void esperarInstrucciones() {
       btn_ataque_pres = true;
     }
     if (estaPresionado(btn_ataque) && btn_ataque_pres) {
-      long unsigned tiempoataque = millis();
+      long unsigned tiempoataque = millis(); 
       enviarGrados();
       delay(3000);
       Wire.beginTransmission(2);
       Wire.write(4);
       Wire.endTransmission();
-      enemigoseliminados =0;
+      enemigoseliminados = 0;
       while (enemigosvivos > 0) {
         lcd.clear();
         lcd.setCursor(0, 0);
-        lcd.print("Vivos: " + String(enemigosvivos));
+        lcd.print("Vivos: " + (String)enemigosvivos);
         lcd.setCursor(0, 1);
         lcd.print("Muertos: " + String(enemigoseliminados));
         delay(2000);
@@ -156,7 +156,7 @@ void esperarInstrucciones() {
         enemigoseliminados++;
         lcd.clear();
         lcd.setCursor(0, 0);
-        lcd.print("Vivos: " + String(enemigosvivos));
+        lcd.print("Vivos: " + (String)enemigosvivos);
         lcd.setCursor(0, 1);
         lcd.print("Muertos: " + String(enemigoseliminados));
         delay(2000);
@@ -165,19 +165,19 @@ void esperarInstrucciones() {
       tiempoataque = millis() - tiempoataque;
       lcd.clear();
       lcd.setCursor(0, 0);
-      lcd.print("T: " +String(tiempoataque/1000));
-      for (int i = 0; i<10; i++){
+      lcd.print("T: " + String(tiempoataque / 1000));
+      for (int i = 0; i < 10; i++) {
         Serial.println(distancia[i]);
-     
+
         Serial.println(distancia2[i]);
         Serial.println("----");
       }
-      int prueba[10] = {22,22,22,22,22,22,22,22,22,22};
+      int prueba[10] = {22, 22, 22, 22, 22, 22, 22, 22, 22, 22};
       mediana(distancia);
       moda(distancia);
       media(distancia);
-      
-      
+
+
       delay(5000);
 
       btn_ataque_pres = false;
@@ -224,13 +224,17 @@ void recibirDistancias() {
       tiempopausa = millis();
     }
 
-
+    lcd.clear();
     while (estaenpausa) {
+      lcd.setCursor(0, 0);
+      lcd.write("En pausa");
       if ((millis() - tiempopausa) >= 5000) {
+
         estaenpausa = false;
         break;
       }
     }
+    lcd.clear();
 
     Wire.beginTransmission(2);
     Wire.write(1);
@@ -277,13 +281,16 @@ void recibirDistancias() {
 
 
 
-
+    lcd.clear();
     while (estaenpausa) {
+      lcd.setCursor(0, 0);
+      lcd.write("En pausa");
       if ((millis() - tiempopausa) >= 5000) {
         estaenpausa = false;
         break;
       }
     }
+    lcd.clear();
     Wire.beginTransmission(2);
     Wire.write(1);
     Wire.endTransmission();
@@ -354,99 +361,101 @@ void ordenarLista() {
 
 // Envia cada una de las posiciones del arreglo al esclavo
 void enviarGrados() {
-  int enemigosvivos=0;
+  enemigosvivos = 0;
   Wire.beginTransmission(2); // inciando la transmision de datos
   Wire.write(3);
   Wire.write('o'); // o -> ok, las lista está correcta
   for (int i = 0; i < 10; i++) {
     if (grados[i] != -1) {
       Wire.write(grados[i]);  // Enviando el valor de la posicion
+      Serial.println(enemigosvivos);
       enemigosvivos++;
     }
   }
   Wire.write(200); // terminando la transmision de datos
   Wire.endTransmission();
+  
 }
 
-void mediana(int ma []){
-int longitud=enemigoseliminados;
- int bandera=0;
- int numero=0;
-    for(int i=longitud; i>0 && bandera==0;i--) {
-        bandera=1;
-        for(int y=0;y<i;y++) {
-            if(ma[y]>ma[y+1]) {
-                numero = ma[y];
-               ma[y] = ma[y+1];
-                ma[y+1]=numero;
-                bandera=0;
-            }
-        }
+void mediana(int ma []) {
+  int longitud = enemigoseliminados;
+  int bandera = 0;
+  int numero = 0;
+  for (int i = longitud; i > 0 && bandera == 0; i--) {
+    bandera = 1;
+    for (int y = 0; y < i; y++) {
+      if (ma[y] > ma[y + 1]) {
+        numero = ma[y];
+        ma[y] = ma[y + 1];
+        ma[y + 1] = numero;
+        bandera = 0;
+      }
     }
-     if(longitud%2!=0) {
-//        print.serial(ma[longitud/2]);
-        lcd.setCursor(6, 0);
-        lcd.print("Me: " +String(ma[longitud/2]));
-        //printf("\nEL valor de la mediana es : %d",ma[longitud/2]);
-    } else {
-//        printf("\nEL valor 1 de la mediana es : %d",ma[longitud/2]);
-//        printf("\nEL valor 2 de la mediana es : %d",ma[(longitud/2)-1]);
-        lcd.setCursor(6, 0);
-        lcd.print("Med: " +String((ma[longitud/2] + ma[(longitud/2)-1])/2));
-//        print.serial(ma[longitud/2]);
-//        print.serial(ma[(longitud/2)-1]);
-    }
-    
-}
-
-void media(int ma []){
-     int suma = 0;
-      int longitud=10;
-    for(int i=0;i<longitud;i++) {
-        suma+=ma[i];
-    }
-    float resultado=suma/longitud;
-    lcd.setCursor(0, 1);
-    lcd.print("X: " +String(resultado));
-    //print.serial(resultado);
+  }
+  if (longitud % 2 != 0) {
+    //        print.serial(ma[longitud/2]);
+    lcd.setCursor(6, 0);
+    lcd.print("Me: " + String(ma[longitud / 2]));
+    //printf("\nEL valor de la mediana es : %d",ma[longitud/2]);
+  } else {
+    //        printf("\nEL valor 1 de la mediana es : %d",ma[longitud/2]);
+    //        printf("\nEL valor 2 de la mediana es : %d",ma[(longitud/2)-1]);
+    lcd.setCursor(6, 0);
+    lcd.print("Med: " + String((ma[longitud / 2] + ma[(longitud / 2) - 1]) / 2));
+    //        print.serial(ma[longitud/2]);
+    //        print.serial(ma[(longitud/2)-1]);
+  }
 
 }
 
-void moda(int ma [] ){
- int longitud=10;
- int auxiliar[longitud];
-   // int ma[10] = {1,2,3,2,20,7,90,83,1,0};
-    for(int i=0; i <longitud;i++) {
-        auxiliar[i]=0;
+void media(int ma []) {
+  int suma = 0;
+  int longitud = 10;
+  for (int i = 0; i < longitud; i++) {
+    suma += ma[i];
+  }
+  float resultado = suma / longitud;
+  lcd.setCursor(0, 1);
+  lcd.print("X: " + String(resultado));
+  //print.serial(resultado);
+
+}
+
+void moda(int ma [] ) {
+  int longitud = 10;
+  int auxiliar[longitud];
+  // int ma[10] = {1,2,3,2,20,7,90,83,1,0};
+  for (int i = 0; i < longitud; i++) {
+    auxiliar[i] = 0;
+  }
+
+  int posicion;
+  int numero;
+  //leo las veces que se repite cada numero.
+  for (int i = 0; i < longitud; i++) {
+    numero = ma[i];
+    posicion = i;
+    for (int y = i; y < longitud; y++) {
+      if (ma[y] == numero) auxiliar[posicion]++;
+    }
+  }
+  // VEO QUIEN ES EL MAYOR
+  int mayor = auxiliar[0];
+  int posicionmayor = 0;
+  for (int i = 0; i < longitud; i++) {
+    if (auxiliar[i] > mayor) {
+      posicionmayor = i;
+      mayor = auxiliar[i];
     }
 
-    int posicion;
-    int numero;
-    //leo las veces que se repite cada numero.
-    for(int i=0;i<longitud;i++) {
-        numero = ma[i];
-        posicion = i;
-        for(int y=i;y<longitud;y++) {
-            if(ma[y]==numero) auxiliar[posicion]++;
-        }
-    }
-// VEO QUIEN ES EL MAYOR
-    int mayor=auxiliar[0];
-    int posicionmayor = 0;
-    for(int i=0;i<longitud;i++) {
-        if(auxiliar[i]>mayor) {
-            posicionmayor=i;
-            mayor=auxiliar[i];
-        }
-        
-    }
-    // Visualizar el elemento con mas frecuencia de aparicion
-   
-    
-   // print.serial(ma[posicionmayor]);
-    lcd.setCursor(9, 1);
-    lcd.print("Mo: " +String(ma[posicionmayor]));
-    
-    
-    
+  }
+  // Visualizar el elemento con mas frecuencia de aparicion
+
+
+  // print.serial(ma[posicionmayor]);
+  lcd.setCursor(9, 1);
+  lcd.print("Mo: " + String(ma[posicionmayor]));
+
+
+
 }
